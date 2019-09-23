@@ -1,6 +1,7 @@
 package com.laptrinhjavaweb.mapper;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.util.ArrayList;
@@ -32,18 +33,17 @@ public class ResultSetMapper<T> {
 						Object columnValue = rs.getObject(i+1);
 						
 						//loop field trong entity's class
-						for(Field field:allFields) {
-							if(field.isAnnotationPresent(Column.class)) {	//field là column ??
-								//truy cập annotation Column
-								Column column = field.getAnnotation(Column.class);
+						convertResultSetToEntity(allFields, columnName, columnValue, object);
+						
+						Class<?> parentClass = zClass.getSuperclass();	//get parent of zClass (neu co)
+						//ktra parentClass co con thua ke tu parent nao k
+						while (parentClass != null) {	//chay den khi parentClass k con parent
+							Field[] fieldParents = parentClass.getDeclaredFields();
 								
-								//matching column entity vs resultset
-								if(column.name().equals(columnName) && columnValue != null) {
-									//convert data
-									BeanUtils.setProperty(object, field.getName(), columnValue);
-									break;
-								}
-							}
+							
+							
+							convertResultSetToEntity(fieldParents, columnName, columnValue, object);
+							parentClass = parentClass.getSuperclass();	//get parent of parentClass
 						}
 					}
 					results.add(object);
@@ -53,5 +53,25 @@ public class ResultSetMapper<T> {
 			System.out.println(e.getMessage());
 		}
 		return results;
+	}
+	
+	private void convertResultSetToEntity (Field[] fields, String columnName, Object columnValue, T object) {
+		try {
+			for(Field field:fields) {
+				if(field.isAnnotationPresent(Column.class)) {	//field là column ??
+					//truy cập annotation Column
+					Column column = field.getAnnotation(Column.class);
+					//matching column entity vs resultset
+					if(column.name().equals(columnName) && columnValue != null) {
+						//convert data
+						BeanUtils.setProperty(object, field.getName(), columnValue);
+						break;
+					}
+				}
+			}
+		}catch( InvocationTargetException |  IllegalAccessException e) {
+			System.out.println();
+		}
+		
 	}
 }

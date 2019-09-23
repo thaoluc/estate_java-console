@@ -1,17 +1,12 @@
 package com.laptrinhjavaweb.entity;
 
-import java.util.Date;
-
 import com.laptrinhjavaweb.annotation.Column;
 import com.laptrinhjavaweb.annotation.Entity;
 import com.laptrinhjavaweb.annotation.Table;
 
 @Entity
 @Table(name = "building")
-public class BuildingEntity {
-	
-	@Column (name = "id")
-	private Long id;
+public class BuildingEntity extends BaseEntity{
 	
 	@Column (name = "name")
 	private String name;
@@ -76,17 +71,6 @@ public class BuildingEntity {
 	@Column (name = "type")
 	private String type;
 	
-	@Column (name = "createddate")
-	private Date createdDate;
-	
-	@Column (name = "modifieddate")
-	private Date modifiedDate;
-	
-	@Column (name = "createdby")
-	private Date createdBy;
-	
-	@Column (name = "modifiedby")
-	private Date modifiedBy;
 	
 	public Integer getCostRent() {
 		return costRent;
@@ -144,7 +128,6 @@ public class BuildingEntity {
 		this.district = district;
 	}
 
-
 	public String getName() {
 		return name;
 	}
@@ -167,46 +150,6 @@ public class BuildingEntity {
 
 	public void setBuildingArea(Integer buildingArea) {
 		this.buildingArea = buildingArea;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public Date getCreatedDate() {
-		return createdDate;
-	}
-
-	public void setCreatedDate(Date createdDate) {
-		this.createdDate = createdDate;
-	}
-
-	public Date getModifiedDate() {
-		return modifiedDate;
-	}
-
-	public void setModifiedDate(Date modifiedDate) {
-		this.modifiedDate = modifiedDate;
-	}
-
-	public Date getCreatedBy() {
-		return createdBy;
-	}
-
-	public void setCreatedBy(Date createdBy) {
-		this.createdBy = createdBy;
-	}
-
-	public Date getModifiedBy() {
-		return modifiedBy;
-	}
-
-	public void setModifiedBy(Date modifiedBy) {
-		this.modifiedBy = modifiedBy;
 	}
 
 	public String getStructure() {

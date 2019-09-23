@@ -13,7 +13,7 @@ public class BuildingController {
 		IBuildingService buildingService = new BuildingService();
 		List<BuildingDTO> buildings = buildingService.findAll();
 		for(BuildingDTO item:buildings) {
-			System.out.println("Name: "+item.getName()+" - "+"Street: "+item.getStreet());
+			System.out.println("Id: "+item.getId()+" Name: "+item.getName()+" - "+"Street: "+item.getStreet());
 		}
 	}
 }
