@@ -1,0 +1,8 @@
+eclipse.preferences.version=1
+encoding//src/main/java/com/laptrinhjavaweb/controller/BuildingController.java=UTF-8
+encoding//src/main/java/com/laptrinhjavaweb/converter/BuildingConverter.java=UTF-8
+encoding//src/main/java/com/laptrinhjavaweb/mapper/ResultSetMapper.java=UTF-8
+encoding//src/main/java/com/laptrinhjavaweb/repository/impl/BuildingRepository.java=UTF-8
+encoding//src/main/java/com/laptrinhjavaweb/repository/impl/SimpleJpaRepository.java=UTF-8
+encoding//src/main/java/com/laptrinhjavaweb/repository/impl/UserRepository.java=UTF-8
+encoding//src/main/java/com/laptrinhjavaweb/service/impl/BuildingService.java=UTF-8
