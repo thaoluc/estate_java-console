@@ -32,17 +32,17 @@ public class ResultSetMapper<T> {
 						//dùng Object do có nhiều kdl khác nhau
 						Object columnValue = rs.getObject(i+1);
 						
+						ColumnModel columnModel = new ColumnModel();
+						columnModel.setColumnName(columnName);
+						columnModel.setColumnValue(columnValue);
 						//loop field trong entity's class
-						convertResultSetToEntity(allFields, columnName, columnValue, object);
+						convertResultSetToEntity(allFields, columnModel, object);
 						
 						Class<?> parentClass = zClass.getSuperclass();	//get parent of zClass (neu co)
 						//ktra parentClass co con thua ke tu parent nao k
 						while (parentClass != null) {	//chay den khi parentClass k con parent
-							Field[] fieldParents = parentClass.getDeclaredFields();
-								
-							
-							
-							convertResultSetToEntity(fieldParents, columnName, columnValue, object);
+							Field[] fieldParents = parentClass.getDeclaredFields();				
+							convertResultSetToEntity(fieldParents, columnModel, object);
 							parentClass = parentClass.getSuperclass();	//get parent of parentClass
 						}
 					}
@@ -55,16 +55,18 @@ public class ResultSetMapper<T> {
 		return results;
 	}
 	
-	private void convertResultSetToEntity (Field[] fields, String columnName, Object columnValue, T object) {
+	@SuppressWarnings("unchecked")
+	private void convertResultSetToEntity (Field[] fields, ColumnModel columnModel, Object...objects ) {
+		T object = (T) objects[0];
 		try {
 			for(Field field:fields) {
 				if(field.isAnnotationPresent(Column.class)) {	//field là column ??
 					//truy cập annotation Column
 					Column column = field.getAnnotation(Column.class);
 					//matching column entity vs resultset
-					if(column.name().equals(columnName) && columnValue != null) {
+					if(column.name().equals(columnModel.getColumnName()) && columnModel.getColumnValue() != null) {
 						//convert data
-						BeanUtils.setProperty(object, field.getName(), columnValue);
+						BeanUtils.setProperty(object, field.getName(), columnModel.getColumnValue());
 						break;
 					}
 				}
@@ -73,5 +75,23 @@ public class ResultSetMapper<T> {
 			System.out.println();
 		}
 		
+	}
+	
+	static class ColumnModel {
+		private String columnName;
+		private Object columnValue;
+		public String getColumnName() {
+			return columnName;
+		}
+		public void setColumnName(String columnName) {
+			this.columnName = columnName;
+		}
+		public Object getColumnValue() {
+			return columnValue;
+		}
+		public void setColumnValue(Object columnValue) {
+			this.columnValue = columnValue;
+		}
+	
 	}
 }
